@@ -26,6 +26,12 @@ public class FarmaceuticoController {
         return LIST;
     }
 
+    @PostMapping("/cadastrar-random")
+    public List<Farmaceutico> cadastrarRandom() {
+        LIST.add(new Farmaceutico());
+        return LIST;
+    }
+
     @PutMapping("/alterar/{index}")
     public List<Farmaceutico> alterar(@PathVariable int index, @RequestBody FarmaceuticoModel model) {
         LIST.remove(index);
