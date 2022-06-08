@@ -1,8 +1,8 @@
 package br.com.triersistemas.andromeda.controller;
 
-import br.com.triersistemas.andromeda.domain.Farmaceutico;
+import br.com.triersistemas.andromeda.domain.Fornecedor;
 import br.com.triersistemas.andromeda.exceptions.NaoExisteException;
-import br.com.triersistemas.andromeda.model.FarmaceuticoModel;
+import br.com.triersistemas.andromeda.model.FornecedorModel;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -10,40 +10,40 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/farmaceutico")
-public class FarmaceuticoController {
+@RequestMapping("/fornecedor")
+public class FornecedorController {
 
-    private static final List<Farmaceutico> LIST = new ArrayList<>();
+    private static final List<Fornecedor> LIST = new ArrayList<>();
 
     @GetMapping("/consultar")
-    public List<Farmaceutico> consultar() {
+    public List<Fornecedor> consultar() {
         return LIST;
     }
 
     @PostMapping("/cadastrar")
-    public List<Farmaceutico> cadastrar(@RequestBody FarmaceuticoModel model) {
-        LIST.add(new Farmaceutico(model.getNome(), model.getNiver(), model.getCpf()));
+    public List<Fornecedor> cadastrar(@RequestBody FornecedorModel model) {
+        LIST.add(new Fornecedor(model.getNome(), model.getNiver(), model.getCnpj()));
         return LIST;
     }
 
     @PostMapping("/cadastrar-random")
-    public List<Farmaceutico> cadastrarRandom() {
-        LIST.add(new Farmaceutico());
+    public List<Fornecedor> cadastrarRandom() {
+        LIST.add(new Fornecedor());
         return LIST;
     }
 
     @PutMapping("/alterar/{id}")
-    public List<Farmaceutico> alterar(@PathVariable UUID id, @RequestBody FarmaceuticoModel model) {
+    public List<Fornecedor> alterar(@PathVariable UUID id, @RequestBody FornecedorModel model) {
         var domain = LIST.stream()
                 .filter(x -> x.getId().equals(id))
                 .findFirst()
                 .orElseThrow(NaoExisteException::new);
-        domain.editar(model.getNome(), model.getNiver(), model.getCpf());
+        domain.editar(model.getNome(), model.getNiver(), model.getCnpj());
         return LIST;
     }
 
     @DeleteMapping("/remover/{id}")
-    public List<Farmaceutico> remover(@PathVariable UUID id) {
+    public List<Fornecedor> remover(@PathVariable UUID id) {
         var domain = LIST.stream()
                 .filter(x -> x.getId().equals(id))
                 .findFirst()

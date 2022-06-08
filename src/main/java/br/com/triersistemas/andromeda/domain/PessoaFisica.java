@@ -1,5 +1,7 @@
 package br.com.triersistemas.andromeda.domain;
 
+import br.com.triersistemas.andromeda.helper.StringUtils;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,20 +22,24 @@ public abstract class PessoaFisica extends Pessoa {
 
     protected PessoaFisica(final String nome, final LocalDate niver, final String cpf) {
         super(nome, niver);
-        this.cpf = extractNumbers(cpf);
+        this.cpf = StringUtils.extractNumbers(cpf);
+    }
+
+    public PessoaFisica editar(final String nome, final LocalDate niver, final String cpf) {
+        super.editar(nome, niver);
+        this.cpf = StringUtils.extractNumbers(cpf);
+        return this;
     }
 
     private String geraCpf(final List<Integer> digitos) {
         digitos.add(super.mod11(digitos, 1, 2, 3, 4, 5, 6, 7, 8, 9));
         digitos.add(super.mod11(digitos, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
-        return digitos.stream()
-                .map(Object::toString)
-                .reduce("", (p, e) -> p + e);
+        return StringUtils.listToString(digitos);
     }
 
     @Override
     public boolean getDocumentoValido() {
-        final List<Integer> digitos = extractNumbersToList(this.cpf);
+        final List<Integer> digitos = StringUtils.extractNumbersToList(this.cpf);
         if (digitos.size() == 11 && digitos.stream().distinct().count() > 1) {
             return geraCpf(digitos.subList(0, 9)).equals(this.cpf);
         }
