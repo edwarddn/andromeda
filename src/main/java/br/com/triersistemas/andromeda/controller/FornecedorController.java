@@ -13,7 +13,7 @@ import java.util.UUID;
 @RequestMapping("/fornecedor")
 public class FornecedorController {
 
-    private static final List<Fornecedor> LIST = new ArrayList<>();
+    public static final List<Fornecedor> LIST = new ArrayList<>();
 
     @GetMapping("/consultar")
     public List<Fornecedor> consultar() {
@@ -21,34 +21,36 @@ public class FornecedorController {
     }
 
     @PostMapping("/cadastrar")
-    public List<Fornecedor> cadastrar(@RequestBody FornecedorModel model) {
-        LIST.add(new Fornecedor(model.getNome(), model.getNiver(), model.getCnpj()));
-        return LIST;
+    public Fornecedor cadastrar(@RequestBody FornecedorModel model) {
+        var domain = new Fornecedor(model.getNome(), model.getNiver(), model.getCnpj());
+        LIST.add(domain);
+        return domain;
     }
 
     @PostMapping("/cadastrar-random")
-    public List<Fornecedor> cadastrarRandom() {
-        LIST.add(new Fornecedor());
-        return LIST;
+    public Fornecedor cadastrarRandom() {
+        var domain = new Fornecedor();
+        LIST.add(domain);
+        return domain;
     }
 
     @PutMapping("/alterar/{id}")
-    public List<Fornecedor> alterar(@PathVariable UUID id, @RequestBody FornecedorModel model) {
+    public Fornecedor alterar(@PathVariable UUID id, @RequestBody FornecedorModel model) {
         var domain = LIST.stream()
                 .filter(x -> x.getId().equals(id))
                 .findFirst()
                 .orElseThrow(NaoExisteException::new);
         domain.editar(model.getNome(), model.getNiver(), model.getCnpj());
-        return LIST;
+        return domain;
     }
 
     @DeleteMapping("/remover/{id}")
-    public List<Fornecedor> remover(@PathVariable UUID id) {
+    public Fornecedor remover(@PathVariable UUID id) {
         var domain = LIST.stream()
                 .filter(x -> x.getId().equals(id))
                 .findFirst()
                 .orElseThrow(NaoExisteException::new);
         LIST.remove(domain);
-        return LIST;
+        return domain;
     }
 }
