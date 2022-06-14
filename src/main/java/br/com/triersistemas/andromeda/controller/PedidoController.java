@@ -5,6 +5,8 @@ import br.com.triersistemas.andromeda.exceptions.NaoExisteException;
 import br.com.triersistemas.andromeda.model.AdicionarProdutoModel;
 import br.com.triersistemas.andromeda.model.PagarPedidoModel;
 import br.com.triersistemas.andromeda.model.PedidoModel;
+import br.com.triersistemas.andromeda.service.ProdutoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,6 +17,9 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/pedido")
 public class PedidoController {
+
+    @Autowired
+    private ProdutoService produtoService; //FIXME arrumar isso
 
     public static final List<Pedido> LIST = new ArrayList<>();
 
@@ -50,10 +55,7 @@ public class PedidoController {
 
         var produtos = model.getIdsProdutos().stream()
                 .map(idProduto-> {
-                    return ProdutoController.LIST.stream()
-                            .filter(x -> x.getId().equals(idProduto))
-                            .findFirst()
-                            .orElseThrow(NaoExisteException::new);
+                    return produtoService.consultar(idProduto);
                 }).collect(Collectors.toList());
 
         return domain.adicionarProduto(produtos);
