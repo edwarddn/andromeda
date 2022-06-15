@@ -1,6 +1,7 @@
 package br.com.triersistemas.andromeda.repository.impl;
 
 import br.com.triersistemas.andromeda.domain.Produto;
+import br.com.triersistemas.andromeda.exceptions.NaoExisteException;
 import br.com.triersistemas.andromeda.repository.ProdutoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,11 @@ public class ProdutoRepositoryImpl implements ProdutoRepository {
     @Override
     public Optional<Produto> pegarDoPote(UUID id) {
        return LIST.stream().filter(produto -> id.equals(produto.getId())).findFirst();
+    }
+
+    @Override
+    public List<Produto> consultar(List<UUID> ids) {
+        return ids.stream().map(id -> this.pegarDoPote(id).orElseThrow(NaoExisteException::new)).toList();
     }
 
     @Override

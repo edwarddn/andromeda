@@ -4,7 +4,6 @@ import br.com.triersistemas.andromeda.enums.EnumStatusPedido;
 import lombok.Getter;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -36,7 +35,7 @@ public class Pedido {
         this.status = EnumStatusPedido.PENDENTE;
     }
 
-    public Pedido adicionarProduto(final List<Produto> produtos) {
+    public Pedido addProdutos(final List<Produto> produtos) {
         if (EnumStatusPedido.PENDENTE.equals(this.status)) {
             this.produtos.addAll(produtos);
             this.valor = this.produtos.stream()
