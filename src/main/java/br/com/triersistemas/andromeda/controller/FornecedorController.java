@@ -13,8 +13,6 @@ import java.util.UUID;
 @RequestMapping("/fornecedor")
 public class FornecedorController {
 
-    public static final List<Fornecedor> LIST = new ArrayList<>();
-
     @GetMapping("/consultar")
     public List<Fornecedor> consultar() {
         return LIST;

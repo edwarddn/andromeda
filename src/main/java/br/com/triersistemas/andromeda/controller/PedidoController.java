@@ -18,11 +18,6 @@ import java.util.stream.Collectors;
 @RequestMapping("/pedido")
 public class PedidoController {
 
-    @Autowired
-    private ProdutoService produtoService; //FIXME arrumar isso
-
-    public static final List<Pedido> LIST = new ArrayList<>();
-
     @GetMapping("/consultar")
     public List<Pedido> consultar() {
         return LIST;
