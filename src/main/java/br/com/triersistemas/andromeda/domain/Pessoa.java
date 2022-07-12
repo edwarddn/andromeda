@@ -2,6 +2,8 @@ package br.com.triersistemas.andromeda.domain;
 
 import br.com.triersistemas.andromeda.helper.StringUtils;
 
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +11,10 @@ import java.time.temporal.ChronoUnit;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@MappedSuperclass
 public abstract class Pessoa {
+
+    @Id
     private UUID id;
     private String nome;
     private LocalDate niver;
@@ -40,11 +45,15 @@ public abstract class Pessoa {
         return nome;
     }
 
-    public String getNiver() {
+    public String getNiverString() {
         if (Objects.nonNull(niver)) {
             return niver.format(DateTimeFormatter.ISO_LOCAL_DATE);
         }
         return "";
+    }
+
+    public LocalDate getNiver() {
+        return this.niver;
     }
 
     public Long getIdade() {
