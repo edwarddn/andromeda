@@ -1,6 +1,7 @@
 package br.com.triersistemas.andromeda.service.impl;
 
 import br.com.triersistemas.andromeda.domain.Cliente;
+import br.com.triersistemas.andromeda.domain.Farmaceutico;
 import br.com.triersistemas.andromeda.domain.Pedido;
 import br.com.triersistemas.andromeda.domain.Produto;
 import br.com.triersistemas.andromeda.exceptions.NaoExisteException;
@@ -46,7 +47,7 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     public Pedido cadastrar(PedidoModel model) {
         var cliente = new Cliente(clienteService.consultar(model.getIdCliente()));
-        var farmaceutico = farmaceuticoService.consultar(model.getIdFarmaceutico());
+        var farmaceutico = new Farmaceutico(farmaceuticoService.consultar(model.getIdFarmaceutico()));
         var pedido = new Pedido(cliente, farmaceutico);
         pedidoRepository.enfiarNoPote(pedido);
         return pedido;

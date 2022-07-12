@@ -18,38 +18,41 @@ public class ProdutoServiceImpl implements ProdutoService {
     private ProdutoRepository produtoRepository;
 
     @Override
-    public List<Produto> consultar() {
-        return produtoRepository.pegarTodosDoPote();
+    public List<ProdutoModel> consultar() {
+        return produtoRepository.findAll().stream().map(ProdutoModel::new).toList();
     }
 
     @Override
-    public Produto consultar(UUID id) {
-        return produtoRepository.pegarDoPote(id).orElseThrow(NaoExisteException::new);
+    public ProdutoModel consultar(UUID id) {
+        return new ProdutoModel(buscarProdutoPorId(id));
     }
 
     @Override
-    public List<Produto> consultar(List<UUID> ids) {
-        return produtoRepository.consultar(ids);
+    public List<ProdutoModel> consultar(List<UUID> ids) {
+        return produtoRepository.findAllById(ids).stream().map(ProdutoModel::new).toList();
     }
 
     @Override
-    public Produto cadastrar(ProdutoModel model) {
+    public ProdutoModel cadastrar(ProdutoModel model) {
         Produto produto = new Produto(model.getNome(), model.getValor());
-        produtoRepository.enfiarNoPote(produto);
-        return produto;
+        return new ProdutoModel(produtoRepository.save(produto));
     }
 
     @Override
-    public Produto alterar(UUID id, ProdutoModel model) {
-        Produto produto = this.consultar(id);
+    public ProdutoModel alterar(ProdutoModel model) {
+        Produto produto = this.buscarProdutoPorId(model.getId());
         produto.editar(model.getNome(), model.getValor());
-        return produto;
+        return new ProdutoModel(produtoRepository.save(produto));
     }
 
     @Override
-    public Produto remover(UUID id) {
-        Produto produto = this.consultar(id);
-        produtoRepository.jogarParaForaDoPote(produto);
-        return produto;
+    public ProdutoModel remover(UUID id) {
+        Produto produto = this.buscarProdutoPorId(id);
+        produtoRepository.delete(produto);
+        return new ProdutoModel(produto);
+    }
+
+    private Produto buscarProdutoPorId(UUID id) {
+        return produtoRepository.findById(id).orElseThrow(NaoExisteException::new);
     }
 }
