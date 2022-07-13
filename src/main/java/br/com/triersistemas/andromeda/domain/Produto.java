@@ -4,9 +4,7 @@ import br.com.triersistemas.andromeda.model.ProdutoModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.UUID;
 @Entity
@@ -16,12 +14,15 @@ import java.util.UUID;
 public class Produto {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id",
+            insertable = false, updatable = false,
+            nullable = false, unique = true)
     private UUID id;
     private String nome;
     private BigDecimal valor;
 
     public Produto(final String nome, final BigDecimal valor) {
-        this.id = UUID.randomUUID();
         this.editar(nome, valor);
     }
 

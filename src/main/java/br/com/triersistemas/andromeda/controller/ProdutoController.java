@@ -19,22 +19,27 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping("/consultar")
-    public List<Produto> consultar() {
+    public List<ProdutoModel> consultar() {
         return produtoService.consultar();
     }
 
     @PostMapping("/cadastrar")
-    public Produto cadastrar(@RequestBody ProdutoModel model) {
+    public ProdutoModel cadastrar(@RequestBody ProdutoModel model) {
         return produtoService.cadastrar(model);
     }
 
-    @PutMapping("/alterar/{id}")
-    public Produto alterar(@PathVariable UUID id, @RequestBody ProdutoModel model) {
-        return produtoService.alterar(id, model);
+    @PutMapping("/alterar")
+    public ProdutoModel alterar(@RequestBody ProdutoModel model) {
+        return produtoService.alterar(model);
     }
 
     @DeleteMapping("/remover/{id}")
-    public Produto remover(@PathVariable UUID id) {
+    public ProdutoModel remover(@PathVariable UUID id) {
         return produtoService.remover(id);
+    }
+
+    @GetMapping("/buscar-por-pedido/{idPedido}")
+    public List<ProdutoModel> buscarPorPedido(@PathVariable UUID idPedido) {
+        return produtoService.buscarPorPedido(idPedido);
     }
 }
